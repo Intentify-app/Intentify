@@ -33,7 +33,7 @@ I have been using Alfred for over a decade (I know there is Raycast, thanks), bu
 
 As someone who relies primarily on first-party apps, I have decided to give Spotlight another try.
 
-Since Shortcuts' built-in scripting has many limitations, I created this tool to make extending it easier.
+Since Shortcuts' built-in scripting has [many limitations](https://github.com/Intentify-app/Intentify/wiki#why-intentify-is-better), I created this tool to make extending it easier.
 
 I may add more features in the future (for example, an extension gallery), but do not expect it to compete with Alfred or Raycast.
 
