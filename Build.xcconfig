@@ -1,0 +1,16 @@
+//
+//  Build.xcconfig
+//  IntentifyMac
+//
+//  Created by cyan on 10/10/25.
+//
+//  https://developer.apple.com/documentation/xcode/adding-a-build-configuration-file-to-your-project
+
+CODE_SIGN_IDENTITY = -
+DEVELOPMENT_TEAM =
+PRODUCT_BUNDLE_IDENTIFIER = app.cyan.intentify-dev
+
+MARKETING_VERSION = 1.0.0
+CURRENT_PROJECT_VERSION = 1
+
+#include? "Local.xcconfig"

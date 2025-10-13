@@ -1,0 +1,22 @@
+name: Build
+
+on:
+  push:
+    branches: ['main']
+  pull_request:
+    branches: ['main']
+    types: [synchronize, opened, reopened, ready_for_review]
+
+jobs:
+  Intentify:
+    name: Intentify
+    runs-on: macos-26
+    if: github.event.pull_request.draft == false
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.0.app/Contents/Developer
+
+    steps:
+      - uses: actions/checkout@v5
+      - name: Build IntentifyMac
+        run: |
+          xcodebuild build -scheme IntentifyMac -destination 'platform=macOS' CODE_SIGN_IDENTITY="" CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO
