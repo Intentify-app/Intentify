@@ -50,3 +50,17 @@ struct IntentifyIntent: AppIntent {
     return .result(value: result)
   }
 }
+
+// Honestly, I'm not sure how it works and can hardly find any useful information online...
+//
+// Apple, please provide better documentation and sample code!
+extension IntentifyIntent: PredictableIntent {
+  static var predictionConfiguration: some IntentPredictionConfiguration {
+    IntentPrediction(parameters: \.$extension) { parameter in
+      DisplayRepresentation(
+        title: "Run \(parameter.name) in Intentify",
+        image: parameter.displayRepresentation.image
+      )
+    }
+  }
+}
