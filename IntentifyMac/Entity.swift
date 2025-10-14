@@ -46,7 +46,6 @@ struct ResultEntity: AppEntity {
   var title: String
   var subtitle: String?
   var image: String?
-  var error: Bool = false
 
   var displayRepresentation: DisplayRepresentation {
     DisplayRepresentation(
@@ -64,10 +63,6 @@ struct ResultEntity: AppEntity {
 
       return Self(title: "\(item)")
     }
-  }
-
-  static func error(with message: String) -> Self {
-    Self(title: message, image: "exclamationmark.circle", error: true)
   }
 }
 

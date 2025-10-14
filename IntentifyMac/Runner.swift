@@ -39,18 +39,33 @@ final class Runner: NSObject {
     return webView
   }()
 
-  func exec(entity: ExtensionEntity, input: String) async -> [ResultEntity] {
-    do {
-      let executable = entity.executable(with: input)
-      if let result = try await webView.callAsyncJavaScript(executable, contentWorld: .page) {
-        return ResultEntity.parse(result: result)
-      }
+  func exec(entity: ExtensionEntity, input: String) async throws -> [ResultEntity] {
+    let result = try await {
+      do {
+        return try await webView.callAsyncJavaScript(
+          entity.executable(with: input),
+          contentWorld: .page
+        )
+      } catch {
+        if let exception = (error as NSError).userInfo["WKJavaScriptExceptionMessage"] {
+          // Provide a more meaningful report than just "A JavaScript exception occurred"
+          throw NSError(domain: "Intentify", code: -100, userInfo: [
+            NSLocalizedDescriptionKey: "Extension “\(entity.name)” raised a JavaScript Exception: “\(exception)”."
+          ])
+        }
 
-      return [.error(with: "<null>")]
-    } catch {
-      // Don't use the default AppIntents error handling, which doesn't show meaningful error message
-      return [.error(with: "\(error)")]
+        throw error
+      }
+    }()
+
+    guard let result else {
+      // The extension returned no value (null is converted to NSNull, which is fine)
+      throw NSError(domain: "Intentify", code: -200, userInfo: [
+        NSLocalizedDescriptionKey: "Extension “\(entity.name)” did not return any value."
+      ])
     }
+
+    return ResultEntity.parse(result: result)
   }
 
   override private init() {}

@@ -38,12 +38,12 @@ struct IntentifyIntent: AppIntent {
   var input: String?
 
   func perform() async throws -> some ReturnsValue<[ResultEntity]> {
-    let result = await Runner.shared.exec(
+    let result = try await Runner.shared.exec(
       entity: self.extension,
       input: input ?? ""
     )
 
-    if let first = result.first, !first.error {
+    if let first = result.first {
       NSPasteboard.general.string = first.title
     }
 
