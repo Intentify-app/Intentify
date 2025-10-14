@@ -11,6 +11,7 @@ import CoreSpotlight
 enum Indexer {
   static func startIndexing() {
     Task {
+      try await CSSearchableIndex.default().deleteAppEntities(ofType: ExtensionEntity.self)
       try await CSSearchableIndex.default().indexAppEntities(ExtensionEntity.allEntities)
 
       IntentProvider.updateAppShortcutParameters()
