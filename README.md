@@ -6,9 +6,9 @@
 
 Extends [Spotlight](https://support.apple.com/guide/mac-help/mchlp1008/mac) by running JavaScript, with [Apple Intelligence](https://www.apple.com/apple-intelligence/) support.
 
-<img src="./Screenshots/01.png" width="540" alt="Screenshot 01">
+<img src="./Screenshots/01.png" width="564" alt="Screenshot 01">
 
-<img src="./Screenshots/02.png" width="540" alt="Screenshot 02">
+<img src="./Screenshots/02.png" width="564" alt="Screenshot 02">
 
 > [!TIP]
 > Discover our other free and open-source apps at [libremac.github.io](https://libremac.github.io/).
