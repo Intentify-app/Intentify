@@ -35,6 +35,6 @@ As someone who relies primarily on first-party apps, I have decided to give Spot
 
 Since Shortcuts' built-in scripting has [many limitations](https://github.com/Intentify-app/Intentify/wiki#why-intentify-is-better), I created this tool to make extending it easier.
 
-I may add more features in the future (for example, an extension gallery), but do not expect it to compete with Alfred or Raycast.
+I may add more features in the future (such as more extensible or better result display), but do not expect it to compete with Alfred or Raycast.
 
 I love simple things.
