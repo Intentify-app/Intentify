@@ -8,6 +8,10 @@
 import AppIntents
 
 struct ExtensionQuery: EnumerableEntityQuery, EntityStringQuery {
+  func suggestedEntities() async throws -> [ExtensionEntity] {
+    ExtensionEntity.allEntities
+  }
+
   func allEntities() async throws -> [ExtensionEntity] {
     ExtensionEntity.allEntities
   }
