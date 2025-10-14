@@ -20,7 +20,7 @@ public struct StatefulButton: View {
 
   public init(
     _ title: LocalizedStringKey,
-    delay: TimeInterval = 0.5,
+    delay: TimeInterval = 1.0,
     action: @escaping () -> Void
   ) {
     self.title = title
@@ -63,6 +63,7 @@ public struct StatefulButton: View {
           Image(systemName: "checkmark")
             .bold()
             .foregroundStyle(.green)
+            .transition(.scale.combined(with: .opacity))
         }
       }
     }
