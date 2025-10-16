@@ -44,11 +44,13 @@ struct IntentifyIntent: AppIntent {
       input: input ?? ""
     )
 
-    if let first = result.first {
-      NSPasteboard.general.string = first.title
+    if let entity = result.first {
+      if entity.shouldCopy {
+        NSPasteboard.general.string = entity.title
+      }
 
-      if result.count == 1 && first.showsSnippet {
-        return .result(value: result, view: first.snippetView)
+      if result.count == 1 && entity.showsSnippet {
+        return .result(value: result, view: entity.snippetView)
       }
     }
 

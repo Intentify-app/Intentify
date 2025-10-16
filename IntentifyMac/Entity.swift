@@ -56,6 +56,10 @@ struct ResultEntity: AppEntity {
     )
   }
 
+  var shouldCopy: Bool {
+    !title.isEmpty
+  }
+
   static func parse(result: Any) -> [Self] {
     ((result as? [Any]) ?? [result]).map { item in
       if let json = item as? [String: String], let title = json["title"] {
