@@ -30,6 +30,8 @@ enum Files {
       to: userFolder,
       force: force
     )
+
+    Indexer.startIndexing()
   }
 
   static var extensionFiles: [String] {
