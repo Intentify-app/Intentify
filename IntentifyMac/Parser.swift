@@ -22,7 +22,7 @@ struct Comment: Codable {
 final class Parser: NSObject {
   static let shared = Parser()
 
-  func parserComments(code: String) throws -> [Comment]? {
+  func parseComments(code: String) throws -> [Comment]? {
     guard let util = context?.objectForKeyedSubscript("window") else {
       Logger.assertFail("Failed to get the window object")
       return nil

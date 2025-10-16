@@ -11,6 +11,11 @@ import SwiftUI
 import IntentifyKit
 
 struct ExtensionEntity: IndexedEntity {
+  struct Metadata: Codable {
+    let description: String?
+    let image: String?
+  }
+
   static let defaultQuery = ExtensionQuery()
   static var typeDisplayRepresentation: TypeDisplayRepresentation { "Extension" }
 
@@ -19,19 +24,28 @@ struct ExtensionEntity: IndexedEntity {
   }
 
   var id: String
+  var metadata: Metadata?
 
   @ComputedProperty(indexingKey: \.displayName)
   var name: String { id.lastPathComponent(deletePathExtension: true) }
 
   @ComputedProperty(indexingKey: \.contentDescription)
-  var description: String { "Run “\(id)” in Intentify." }
+  var description: String { metadata?.description ?? "Run “\(id)” in Intentify." }
 
   var displayRepresentation: DisplayRepresentation {
     DisplayRepresentation(
       title: "\(name)",
       subtitle: "\(description)",
-      image: DisplayRepresentation.Image(with: "curlybraces")
+      image: DisplayRepresentation.Image(with: metadata?.image ?? "curlybraces")
     )
+  }
+
+  init(id: String) {
+    self.id = id
+
+    if let json = try? Data(contentsOf: Files.metadataFolder.appending(path: "\(name).json")) {
+      self.metadata = try? JSONDecoder().decode(Metadata.self, from: json)
+    }
   }
 }
 
