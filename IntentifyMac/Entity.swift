@@ -15,7 +15,7 @@ struct ExtensionEntity: IndexedEntity {
   static var typeDisplayRepresentation: TypeDisplayRepresentation { "Extension" }
 
   static var allEntities: [Self] {
-    Files.extensionFiles.map { Self(id: $0) }
+    Files.extensionFileNames.map { Self(id: $0) }
   }
 
   var id: String

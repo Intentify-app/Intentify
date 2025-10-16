@@ -8,6 +8,18 @@
 import Foundation
 
 public extension FileManager {
+  func ensureFolder(url: URL) {
+    guard !fileExists(atPath: url.path) else {
+      return
+    }
+
+    do {
+      try createDirectory(at: url, withIntermediateDirectories: true)
+    } catch {
+      Logger.log(.error, "\(error)")
+    }
+  }
+
   func copyFiles(from sourceFolder: URL, to targetFolder: URL, force: Bool = false) {
     ensureFolder(url: targetFolder)
 
@@ -36,21 +48,5 @@ public extension FileManager {
 
   func fileURLs(in folder: URL) -> [URL] {
     (try? contentsOfDirectory(at: folder, includingPropertiesForKeys: nil)) ?? []
-  }
-}
-
-// MARK: - Private
-
-private extension FileManager {
-  func ensureFolder(url: URL) {
-    guard !fileExists(atPath: url.path) else {
-      return
-    }
-
-    do {
-      try createDirectory(at: url, withIntermediateDirectories: true)
-    } catch {
-      Logger.log(.error, "\(error)")
-    }
   }
 }
