@@ -10,6 +10,7 @@ import IntentifyKit
 
 enum Files {
   static let userFolder = URL.documentsDirectory.appending(path: folderName)
+  static let metadataFolder = URL.documentsDirectory.appending(path: ".metadata")
 
   static var intentifyScript: String? {
     guard let url = Bundle.main.url(forResource: "Intentify", withExtension: "js") else {
@@ -41,6 +42,30 @@ enum Files {
     )
 
     Indexer.startIndexing()
+  }
+
+  static func generateMetadata() {
+    try? FileManager.default.removeItem(at: metadataFolder)
+    FileManager.default.ensureFolder(url: metadataFolder)
+
+    let encoder = JSONEncoder()
+    encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+
+    for url in extensionFileURLs {
+      let content = (try? Data(contentsOf: url))?.toString() ?? ""
+      let comment = (try? Parser.shared.parseComments(code: content))?.first
+
+      let metadata = ExtensionEntity.Metadata(
+        description: comment?.description,
+        image: (comment?.tags?.first { $0.name == "image" })?.value
+      )
+
+      let filename = url.deletingPathExtension().lastPathComponent
+      let target = metadataFolder.appending(path: "\(filename).json")
+
+      let data = try? encoder.encode(metadata)
+      try? data?.write(to: target)
+    }
   }
 
   static var extensionFileURLs: [URL] {
