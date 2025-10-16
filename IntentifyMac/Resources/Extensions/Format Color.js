@@ -1,3 +1,8 @@
+/**
+ * Convert between RGB and HEX color formats.
+ *
+ * @image textformat
+ */
 function main(input) {
   const color = input.trim();
   const regexHex = /^#?([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/;

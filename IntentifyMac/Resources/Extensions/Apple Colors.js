@@ -1,3 +1,8 @@
+/**
+ * Search Apple system colors.
+ *
+ * @image paintpalette
+ */
 function main(query) {
   const colors = [
     ['Red (Light)', '#FF383C'],
