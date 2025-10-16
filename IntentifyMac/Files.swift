@@ -20,6 +20,15 @@ enum Files {
     return try? Data(contentsOf: url).toString()
   }
 
+  static var parserScript: String? {
+    guard let url = Bundle.main.url(forResource: "Parser", withExtension: "js") else {
+      Logger.assertFail("Missing Parser.js in main bundle")
+      return nil
+    }
+
+    return try? Data(contentsOf: url).toString()
+  }
+
   static func copyFiles(force: Bool = false) {
     guard let bundleFolder else {
       return Logger.assertFail("Missing \(folderName) bundle folder")
