@@ -7,6 +7,7 @@
 
 import AppKit
 import AppIntents
+import SwiftUI
 import IntentifyKit
 
 struct ExtensionEntity: IndexedEntity {
@@ -63,6 +64,18 @@ struct ResultEntity: AppEntity {
 
       return Self(title: "\(item)")
     }
+  }
+}
+
+// MARK: - Snippet View
+
+extension ResultEntity {
+  var showsSnippet: Bool {
+    title.count > 100 && subtitle == nil && image == nil
+  }
+
+  var snippetView: some View {
+    Text(title)
   }
 }
 

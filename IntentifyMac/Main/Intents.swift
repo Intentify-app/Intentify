@@ -7,6 +7,7 @@
 
 import AppKit
 import AppIntents
+import SwiftUI
 import IntentifyKit
 
 struct IntentProvider: AppShortcutsProvider {
@@ -37,7 +38,7 @@ struct IntentifyIntent: AppIntent {
   @Parameter(title: "Input", description: "The input value for running the extension. Uses an empty string if omitted.", default: "", inputOptions: String.IntentInputOptions(capitalizationType: .none, multiline: true, autocorrect: false, smartQuotes: false, smartDashes: false))
   var input: String?
 
-  func perform() async throws -> some ReturnsValue<[ResultEntity]> {
+  func perform() async throws -> some ReturnsValue<[ResultEntity]> & ShowsSnippetView {
     let result = try await Runner.shared.exec(
       entity: self.extension,
       input: input ?? ""
@@ -45,6 +46,10 @@ struct IntentifyIntent: AppIntent {
 
     if let first = result.first {
       NSPasteboard.general.string = first.title
+
+      if result.count == 1 && first.showsSnippet {
+        return .result(value: result, view: first.snippetView)
+      }
     }
 
     return .result(value: result)
