@@ -9,7 +9,7 @@ import Foundation
 import IntentifyKit
 
 enum Files {
-  static let userFolder = URL.documentsDirectory.appendingPathComponent(folderName)
+  static let userFolder = URL.documentsDirectory.appending(path: folderName)
 
   static var intentifyScript: String? {
     guard let url = Bundle.main.url(forResource: "Intentify", withExtension: "js") else {
@@ -34,10 +34,13 @@ enum Files {
     Indexer.startIndexing()
   }
 
-  static var extensionFiles: [String] {
+  static var extensionFileURLs: [URL] {
     FileManager.default.fileURLs(in: userFolder)
       .filter { $0.lowercasedPathExtension == "js" }
-      .map { $0.lastPathComponent }
+  }
+
+  static var extensionFileNames: [String] {
+    extensionFileURLs.map { $0.lastPathComponent }
   }
 
   static func contents(of entity: ExtensionEntity) -> String {
