@@ -10,6 +10,8 @@ Extends [Spotlight](https://support.apple.com/guide/mac-help/mchlp1008/mac) by r
 
 <img src="./Screenshots/02.png" width="564" alt="Screenshot 02">
 
+<img src="./Screenshots/03.png" width="564" alt="Screenshot 03">
+
 > [!TIP]
 > Discover our other free and open-source apps at [libremac.github.io](https://libremac.github.io/).
 
