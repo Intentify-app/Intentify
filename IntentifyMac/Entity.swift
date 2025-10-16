@@ -24,11 +24,12 @@ struct ExtensionEntity: IndexedEntity {
   var name: String { id.lastPathComponent(deletePathExtension: true) }
 
   @ComputedProperty(indexingKey: \.contentDescription)
-  var description: String { "Run “\(id)” in Intentify" }
+  var description: String { "Run “\(id)” in Intentify." }
 
   var displayRepresentation: DisplayRepresentation {
     DisplayRepresentation(
       title: "\(name)",
+      subtitle: "\(description)",
       image: DisplayRepresentation.Image(with: "curlybraces")
     )
   }
