@@ -52,7 +52,8 @@ struct IntentifyIntent: AppIntent {
       }
     }
 
-    return .result(value: result)
+    // EmptyView() renders nothing but quits Spotlight for window.open()
+    return .result(value: result, view: EmptyView())
   }
 }
 
