@@ -12,7 +12,6 @@ import IntentifyKit
 struct IntentifyApp: App {
   init () {
     Files.copyFiles()
-    Indexer.startIndexing()
 
     let checkUpdates: @Sendable () -> Void = {
       Task {
