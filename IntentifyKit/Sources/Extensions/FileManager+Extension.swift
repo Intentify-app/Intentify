@@ -9,7 +9,7 @@ import Foundation
 
 public extension FileManager {
   func ensureFolder(url: URL) {
-    guard !fileExists(atPath: url.path) else {
+    guard !fileExists(atPath: url.path(percentEncoded: false)) else {
       return
     }
 

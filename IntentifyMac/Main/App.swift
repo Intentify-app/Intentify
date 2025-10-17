@@ -151,6 +151,23 @@ private struct IntentifyView: View {
         }
         .buttonStyle(.glass)
         .keyboardShortcut(KeyEquivalent("e"), modifiers: .command)
+        .contextMenu {
+          ForEach(NSWorkspace.shared.urlsForApplications(toOpen: Files.userFolder), id: \.self) { app in
+            Button {
+              NSWorkspace.shared.open(
+                [Files.userFolder],
+                withApplicationAt: app,
+                configuration: .init()
+              )
+            } label: {
+              Label {
+                Text("Open with \(app.lastPathComponent)")
+              } icon: {
+                Image(nsImage: NSWorkspace.shared.icon(forFile: app.path(percentEncoded: false)))
+              }
+            }
+          }
+        }
 
         Text(" folder and ")
 
