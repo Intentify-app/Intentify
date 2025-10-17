@@ -1,7 +1,7 @@
 /**
  * Show you a random Chuck Norris joke.
  *
- * @image sunglasses
+ * @image mustache
  */
 async function main() {
   const response = await fetch('https://api.chucknorris.io/jokes/random');
