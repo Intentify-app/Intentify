@@ -4,3 +4,6 @@
 ## User settings
 xcuserdata/
 Local.xcconfig
+
+## NPM
+node_modules/

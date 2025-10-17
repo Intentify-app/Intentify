@@ -1,0 +1,15 @@
+{
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx esbuild index.js --bundle --minify --outfile=../IntentifyMac/Resources/Parser.js --format=iife"
+  },
+  "dependencies": {
+    "acorn": "^8.15.0",
+    "comment-parser": "^1.4.1"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.11"
+  },
+  "license": "MIT"
+}
