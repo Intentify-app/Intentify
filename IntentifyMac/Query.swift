@@ -22,9 +22,11 @@ struct ExtensionQuery: EnumerableEntityQuery, EntityStringQuery {
     }
   }
 
-  func entities(matching name: String) async throws -> [ExtensionEntity] {
-    ExtensionEntity.allEntities.filter {
-      $0.name.range(of: name, options: .caseInsensitive) != nil
+  func entities(matching pattern: String) async throws -> [ExtensionEntity] {
+    ExtensionEntity.allEntities.filter { entity in
+      [entity.name, entity.description].contains {
+        $0.localizedCaseInsensitiveContains(pattern)
+      }
     }
   }
 }
