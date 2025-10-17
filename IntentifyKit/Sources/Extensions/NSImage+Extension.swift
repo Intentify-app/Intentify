@@ -8,12 +8,24 @@
 import AppKit
 
 public extension NSImage {
+  var pngData: Data? {
+    guard let tiffData = tiffRepresentation else {
+      return nil
+    }
+
+    guard let bitmapRep = NSBitmapImageRep(data: tiffData) else {
+      return nil
+    }
+
+    return bitmapRep.representation(using: .png, properties: [:])
+  }
+
   static func with(
     symbolName: String,
     color: NSColor = .controlAccentColor,
-    size: Double = 128,
-    padding: Double = 12,
-    cornerRadius: Double? = 20
+    size: Double = 64,
+    padding: Double = 6,
+    cornerRadius: Double? = 10
   ) -> NSImage? {
     let baseSymbol = NSImage(
       systemSymbolName: symbolName,
@@ -76,16 +88,12 @@ public extension NSImage {
     return image
   }
 
-  var pngData: Data? {
-    guard let tiffData = tiffRepresentation else {
+  static func base64Data(with encoded: String) -> Data? {
+    guard Self(systemSymbolName: encoded, accessibilityDescription: nil) == nil else {
       return nil
     }
 
-    guard let bitmapRep = NSBitmapImageRep(data: tiffData) else {
-      return nil
-    }
-
-    return bitmapRep.representation(using: .png, properties: [:])
+    return Data(base64Encoded: encoded, options: .ignoreUnknownCharacters)
   }
 }
 

@@ -106,12 +106,10 @@ private extension DisplayRepresentation.Image {
       return nil
     }
 
-    if let pngData = NSImage.with(symbolName: image)?.pngData {
-      self = DisplayRepresentation.Image(data: pngData)
-    } else if let data = Data(base64Encoded: image, options: .ignoreUnknownCharacters) {
-      self = DisplayRepresentation.Image(data: data)
+    if let data = NSImage.with(symbolName: image)?.pngData ?? NSImage.base64Data(with: image) {
+      self = Self(data: data, isTemplate: false)
     } else {
-      self = DisplayRepresentation.Image(systemName: image)
+      self = Self(systemName: image, isTemplate: true)
     }
   }
 }
