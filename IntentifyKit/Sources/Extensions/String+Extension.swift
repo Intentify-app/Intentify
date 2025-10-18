@@ -13,6 +13,14 @@ public extension String {
     self.init(data: data, encoding: String.Encoding(from: encoding))
   }
 
+  var quoteEscaped: Self {
+    guard let data = try? JSONEncoder().encode(self), let json = data.toString() else {
+      return "\"\""
+    }
+
+    return json
+  }
+
   /// Overload of the String.Encoding version.
   func data(using encoding: CFStringEncodings, allowLossyConversion: Bool = false) -> Data? {
     data(using: String.Encoding(from: encoding), allowLossyConversion: allowLossyConversion)

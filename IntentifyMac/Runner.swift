@@ -12,8 +12,11 @@ final class Runner: NSObject {
   static let shared = Runner()
 
   private lazy var webView: WKWebView = {
+    let handler = MessageHandler()
+    handler.getContext = { [weak self] in self?.webView }
+
     let controller = WKUserContentController()
-    controller.addScriptMessageHandler(MessageHandler(), contentWorld: .page, name: "bridge")
+    controller.addScriptMessageHandler(handler, contentWorld: .page, name: "bridge")
 
     let config = WKWebViewConfiguration()
     config.userContentController = controller
@@ -86,6 +89,8 @@ extension Runner: WKUIDelegate {
 // MARK: - Private
 
 private class MessageHandler: NSObject, Sendable, WKScriptMessageHandlerWithReply {
+  var getContext: (() -> WKWebView?)?
+
   func userContentController(
     _ userContentController: WKUserContentController,
     didReceive message: WKScriptMessage
@@ -116,16 +121,8 @@ private extension ExtensionEntity {
     """
     return (() => {
       \(Files.contents(of: self))
-      return main(\(escape(input)));
+      return main(\(input.quoteEscaped));
     })();
     """
-  }
-
-  func escape(_ input: String) -> String {
-    guard let data = try? JSONEncoder().encode(input), let json = data.toString() else {
-      return "\"\""
-    }
-
-    return json
   }
 }
