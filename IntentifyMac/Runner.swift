@@ -117,7 +117,7 @@ private class MessageHandler: NSObject, Sendable, WKScriptMessageHandlerWithRepl
     }
 
     if body["command"] as? String == "returnValue" {
-      return (Renderer.shared.returnValue(parameters["value"]), nil)
+      return (Renderer.shared.returnValue(parameters["value"], explicitly: true), nil)
     }
 
     return ("Invalid message: \(body)", nil)

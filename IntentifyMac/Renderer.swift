@@ -36,14 +36,8 @@ final class Renderer: NSObject {
     let height = (options?["height"] as? Double) ?? 270
     let size = CGSize(width: width, height: height)
 
-    NotificationCenter.default.removeObserver(
-      self,
-      name: NSWindow.willCloseNotification,
-      object: nil
-    )
-
-    closeWindows()
-    NSApp.activate(ignoringOtherApps: true)
+    closeWindows(explicitly: false)
+    NSApp.bringToFront()
     NSApp.setActivationPolicy(.accessory)
 
     context.frame = CGRect(origin: .zero, size: size)
@@ -63,13 +57,6 @@ final class Renderer: NSObject {
       Logger.log(.error, "\(error)")
     }
 
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(windowWillClose(_:)),
-      name: NSWindow.willCloseNotification,
-      object: nil
-    )
-
     return await withCheckedContinuation { [weak self] continuation in
       self?.resumeContinuation = {
         continuation.resume(returning: $0)
@@ -77,12 +64,12 @@ final class Renderer: NSObject {
     }
   }
 
-  func returnValue(_ value: Any?, shouldCloseWindow: Bool = true) -> Any? {
+  func returnValue(_ value: Any?, explicitly: Bool) -> Any? {
     resumeContinuation?(value)
     resumeContinuation = nil
 
-    if shouldCloseWindow {
-      closeWindows()
+    if explicitly {
+      closeWindows(explicitly: true)
     }
 
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -92,14 +79,29 @@ final class Renderer: NSObject {
     return value
   }
 
-  override private init() {}
+  override private init() {
+    super.init()
+
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(windowWillClose(_:)),
+      name: NSWindow.willCloseNotification,
+      object: nil
+    )
+  }
 }
 
 // MARK: - Private
 
 private extension Renderer {
-  func closeWindows() {
-    NSApp.windows.forEach { $0.close() }
+  func closeWindows(explicitly: Bool) {
+    NSApp.windows.forEach {
+      guard explicitly || $0 !== window else {
+        return
+      }
+
+      $0.close()
+    }
   }
 
   @objc func windowWillClose(_ notification: Notification) {
@@ -107,6 +109,6 @@ private extension Renderer {
       return
     }
 
-    _ = returnValue(nil, shouldCloseWindow: false)
+    _ = returnValue(nil, explicitly: false)
   }
 }
