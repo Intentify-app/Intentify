@@ -14,6 +14,7 @@ struct ExtensionEntity: IndexedEntity {
   struct Metadata: Codable {
     let description: String?
     let image: String?
+    let showsDialog: Bool
   }
 
   static let defaultQuery = ExtensionQuery()
@@ -89,12 +90,8 @@ struct ResultEntity: AppEntity {
 // MARK: - Snippet View
 
 extension ResultEntity {
-  var showsSnippet: Bool {
-    title.count > 100 && subtitle == nil && image == nil
-  }
-
   var snippetView: some View {
-    Text(title)
+      Text(title)
   }
 }
 

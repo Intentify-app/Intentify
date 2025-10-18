@@ -84,7 +84,8 @@ enum Files {
 
       let metadata = ExtensionEntity.Metadata(
         description: comment?.description,
-        image: (comment?.tags?.first { $0.name == "image" })?.value
+        image: (comment?.tags?.first { $0.name == "image" })?.value,
+        showsDialog: (comment?.tags?.first { $0.name == "showsDialog" })?.value == "true"
       )
 
       let filename = url.deletingPathExtension().lastPathComponent

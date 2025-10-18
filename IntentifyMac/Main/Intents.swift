@@ -49,7 +49,7 @@ struct IntentifyIntent: AppIntent {
         NSPasteboard.general.string = entity.title
       }
 
-      if result.count == 1 && entity.showsSnippet {
+      if result.count == 1 && self.extension.metadata?.showsDialog == true {
         return .result(value: result, view: entity.snippetView)
       }
     }
