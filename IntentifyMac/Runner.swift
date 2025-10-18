@@ -12,31 +12,48 @@ final class Runner: NSObject {
   static let shared = Runner()
 
   private lazy var webView: WKWebView = {
+    class Configuration: WKWebViewConfiguration {
+      // To mimic settable isOpaque on iOS,
+      // which is required for the background color and initial white flash in dark mode
+      @objc func _drawsBackground() -> Bool { false }
+    }
+
     let handler = MessageHandler()
     handler.getContext = { [weak self] in self?.webView }
 
     let controller = WKUserContentController()
     controller.addScriptMessageHandler(handler, contentWorld: .page, name: "bridge")
 
-    let config = WKWebViewConfiguration()
+    let config = Configuration()
     config.userContentController = controller
 
     let webView = WKWebView(frame: .zero, configuration: config)
     webView.uiDelegate = self
     webView.isInspectable = true
+    webView.allowsMagnification = true
 
     if let intentifyScript = Files.intentifyScript {
       webView.evaluateJavaScript(intentifyScript)
     }
 
+    if config.preferences.responds(to: sel_getUid("_developerExtrasEnabled")) {
+      config.preferences.setValue(true, forKey: "developerExtrasEnabled")
+    } else {
+      Logger.assertFail("Failed to overwrite developerExtrasEnabled in WKPreferences")
+    }
+
     // Unlock fetch to work without CORS restrictions
     if config.preferences.responds(to: sel_getUid("_webSecurityEnabled")) {
       config.preferences.setValue(false, forKey: "webSecurityEnabled")
+    } else {
+      Logger.assertFail("Failed to overwrite webSecurityEnabled in WKPreferences")
     }
 
     // Unlock more API availability without a secure origin
     if config.preferences.responds(to: sel_getUid("_secureContextChecksEnabled")) {
       config.preferences.setValue(false, forKey: "secureContextChecksEnabled")
+    } else {
+      Logger.assertFail("Failed to overwrite secureContextChecksEnabled in WKPreferences")
     }
 
     return webView
