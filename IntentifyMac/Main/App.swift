@@ -11,12 +11,7 @@ import IntentifyKit
 @main
 struct IntentifyApp: App {
   init () {
-    if Preferences.General.copyBundleFiles {
-      Files.copyFiles()
-      Preferences.General.copyBundleFiles = false
-    } else {
-      Indexer.startIndexing()
-    }
+    Files.copyFiles()
 
     let checkUpdates: @Sendable () -> Void = {
       Task {
