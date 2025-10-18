@@ -1,7 +1,9 @@
-const bridge = window.webkit.messageHandlers.bridge;
+async function __invokeIntentify(message) {
+  return await window.webkit.messageHandlers.bridge.postMessage(message);
+}
 
 async function askAI(prompt) {
-  return await bridge.postMessage({
+  return await __invokeIntentify({
     command: 'askAI',
     parameters: { prompt },
   });
