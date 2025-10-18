@@ -10,7 +10,12 @@ import Foundation
 /**
  UserDefaults wrapper with handy getters and setters.
  */
-enum Preferences {}
+enum Preferences {
+  enum General {
+    @Storage(key: "general.copy-bundle-files", defaultValue: true)
+    static var copyBundleFiles: Bool
+  }
+}
 
 @MainActor
 @propertyWrapper
