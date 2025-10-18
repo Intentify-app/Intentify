@@ -58,14 +58,8 @@ final class Runner: NSObject {
       }
     }()
 
-    guard let result else {
-      // The extension returned no value (null is converted to NSNull, which is fine)
-      throw NSError(domain: "Intentify", code: -200, userInfo: [
-        NSLocalizedDescriptionKey: "Extension “\(entity.name)” did not return any value."
-      ])
-    }
-
-    return ResultEntity.parse(result: result)
+    // If the extension returns no value, the input is passed to the next action
+    return ResultEntity.parse(result: result ?? input)
   }
 
   override private init() {}
