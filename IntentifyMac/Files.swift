@@ -7,6 +7,7 @@
 
 import Foundation
 import IntentifyKit
+import os.log
 
 enum Files {
   static let userFolder = URL.documentsDirectory.appending(path: folderName)
@@ -35,11 +36,37 @@ enum Files {
       return Logger.assertFail("Missing \(folderName) bundle folder")
     }
 
-    FileManager.default.copyFiles(
-      from: bundleFolder,
-      to: userFolder,
-      force: force
-    )
+    do {
+      let fileManager = FileManager.default
+      fileManager.ensureFolder(url: userFolder)
+
+      let sourceURLs = try fileManager.contentsOfDirectory(
+        at: bundleFolder,
+        includingPropertiesForKeys: nil
+      )
+
+      var copiedBundleFiles = Preferences.General.copiedBundleFiles
+      for sourceURL in sourceURLs {
+        let filename = sourceURL.lastPathComponent
+        let targetURL = userFolder.appending(path: filename)
+        let targetPath = targetURL.path(percentEncoded: false)
+        let shouldCopy = force || !copiedBundleFiles.contains(filename)
+
+        if force && fileManager.fileExists(atPath: targetPath) {
+          try fileManager.removeItem(at: targetURL)
+        }
+
+        if shouldCopy && !fileManager.fileExists(atPath: targetPath) {
+          try fileManager.copyItem(at: sourceURL, to: targetURL)
+        }
+
+        copiedBundleFiles.insert(filename)
+      }
+
+      Preferences.General.copiedBundleFiles = copiedBundleFiles
+    } catch {
+      Logger.log(.error, "\(error)")
+    }
 
     Indexer.startIndexing()
   }

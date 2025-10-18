@@ -12,8 +12,8 @@ import Foundation
  */
 enum Preferences {
   enum General {
-    @Storage(key: "general.copy-bundle-files", defaultValue: true)
-    static var copyBundleFiles: Bool
+    @Storage(key: "general.copied-bundle-files", defaultValue: Set())
+    static var copiedBundleFiles: Set<String>
   }
 }
 

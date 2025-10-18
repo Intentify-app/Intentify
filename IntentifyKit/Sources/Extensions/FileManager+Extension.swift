@@ -20,32 +20,6 @@ public extension FileManager {
     }
   }
 
-  func copyFiles(from sourceFolder: URL, to targetFolder: URL, force: Bool = false) {
-    ensureFolder(url: targetFolder)
-
-    do {
-      let sourceURLs = try contentsOfDirectory(
-        at: sourceFolder,
-        includingPropertiesForKeys: nil
-      )
-
-      for sourceURL in sourceURLs {
-        let targetURL = targetFolder.appending(path: sourceURL.lastPathComponent)
-        let targetPath = targetURL.path(percentEncoded: false)
-
-        if force && fileExists(atPath: targetPath) {
-          try removeItem(at: targetURL)
-        }
-
-        if !fileExists(atPath: targetPath) {
-          try copyItem(at: sourceURL, to: targetURL)
-        }
-      }
-    } catch {
-      Logger.log(.error, "\(error)")
-    }
-  }
-
   func fileURLs(in folder: URL) -> [URL] {
     (try? contentsOfDirectory(at: folder, includingPropertiesForKeys: nil)) ?? []
   }
