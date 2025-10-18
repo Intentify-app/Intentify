@@ -77,7 +77,7 @@ final class Renderer: NSObject {
     }
   }
 
-  func returnValue(_ value: Any?, shouldCloseWindow: Bool = true) {
+  func returnValue(_ value: Any?, shouldCloseWindow: Bool = true) -> Any? {
     resumeContinuation?(value)
     resumeContinuation = nil
 
@@ -88,6 +88,8 @@ final class Renderer: NSObject {
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
       NSApp.terminate(nil)
     }
+
+    return value
   }
 
   override private init() {}
@@ -105,6 +107,6 @@ private extension Renderer {
       return
     }
 
-    returnValue(nil, shouldCloseWindow: false)
+    _ = returnValue(nil, shouldCloseWindow: false)
   }
 }
