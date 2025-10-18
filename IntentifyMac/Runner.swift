@@ -112,6 +112,14 @@ private class MessageHandler: NSObject, Sendable, WKScriptMessageHandlerWithRepl
       return (await Intelligence.shared.respondTo(prompt: prompt), nil)
     }
 
+    if body["command"] as? String == "renderUI", let context = getContext?() {
+      return (await Renderer.shared.renderUI(context: context, parameters: parameters), nil)
+    }
+
+    if body["command"] as? String == "returnValue" {
+      return (Renderer.shared.returnValue(parameters["value"]), nil)
+    }
+
     return ("Invalid message: \(body)", nil)
   }
 }
