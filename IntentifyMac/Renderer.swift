@@ -31,7 +31,7 @@ final class Renderer: NSObject {
     let html = parameters?["html"] as? String
     let options = parameters?["options"] as? [String: Any]
 
-    let title = (options?["title"] as? String) ?? "Intentify"
+    let title = (options?["title"] as? String) ?? ""
     let width = (options?["width"] as? Double) ?? 480
     let height = (options?["height"] as? Double) ?? 270
     let size = CGSize(width: width, height: height)
@@ -53,6 +53,11 @@ final class Renderer: NSObject {
       try await context.evaluateJavaScript(
         "document.body.innerHTML = \((html ?? "").quoteEscaped);"
       )
+
+      if window.title.isEmpty {
+        let title = try await context.evaluateJavaScript("document.title")
+        window.title = (title as? String) ?? "Intentify"
+      }
     } catch {
       Logger.log(.error, "\(error)")
     }
