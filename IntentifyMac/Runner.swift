@@ -137,6 +137,10 @@ private class MessageHandler: NSObject, Sendable, WKScriptMessageHandlerWithRepl
       return (Renderer.shared.returnValue(parameters["value"], explicitly: true), nil)
     }
 
+    if body["command"] as? String == "runService", let name = parameters["name"] as? String {
+      return (await NSPasteboard.general.runService(name, input: parameters["input"]), nil)
+    }
+
     return reportError("Invalid message: \(body)")
   }
 }

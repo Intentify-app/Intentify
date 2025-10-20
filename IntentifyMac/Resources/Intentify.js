@@ -37,4 +37,11 @@ async function returnValue(value) {
   });
 }
 
-window.Intentify = { askAI, renderUI, returnValue };
+async function runService(name, input) {
+  return await __invokeIntentify({
+    command: 'runService',
+    parameters: { name, input },
+  });
+}
+
+window.Intentify = { askAI, renderUI, returnValue, runService };
