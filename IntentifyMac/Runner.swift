@@ -137,7 +137,7 @@ private class MessageHandler: NSObject, Sendable, WKScriptMessageHandlerWithRepl
       return (Renderer.shared.returnValue(parameters["value"], explicitly: true), nil)
     }
 
-    return ("Invalid message: \(body)", nil)
+    return reportError("Invalid message: \(body)")
   }
 }
 
