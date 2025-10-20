@@ -21,4 +21,14 @@ public extension NSPasteboard {
       setString(newValue, forType: .string)
     }
   }
+
+  func runService(_ name: String, input: Any?) async -> Bool {
+    let content = input as? String
+    string = content ?? ""
+
+    // The pasteboard item is used as input, but it's not done synchronously
+    let result = NSPerformService(name, self)
+    try? await Task.sleep(for: .seconds(0.5))
+    return result
+  }
 }
