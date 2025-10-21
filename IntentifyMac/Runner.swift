@@ -184,24 +184,26 @@ private class MessageHandler: NSObject, Sendable, WKScriptMessageHandlerWithRepl
       return reportError("Invalid message name: \(message.name)")
     }
 
-    guard let body = message.body as? [String: Any], let parameters = body["parameters"] as? [String: Any] else {
+    guard let body = message.body as? [String: Any],
+          let command = body["command"] as? String,
+          let parameters = body["parameters"] as? [String: Any] else {
       return reportError("Invalid message body: \(message.body)")
     }
 
-    if body["command"] as? String == "askAI", let prompt = parameters["prompt"] as? String {
-      return (await Intelligence.shared.respondTo(prompt: prompt), nil)
+    if command == "askAI", let prompt = parameters["prompt"] as? String {
+      return await Intelligence.shared.respondTo(prompt: prompt)
     }
 
-    if body["command"] as? String == "renderUI", let context = getContext?() {
-      return (await Renderer.shared.renderUI(context: context, parameters: parameters), nil)
+    if command == "renderUI", let context = getContext?() {
+      return await Renderer.shared.renderUI(context: context, parameters: parameters)
     }
 
-    if body["command"] as? String == "returnValue" {
-      return (Renderer.shared.returnValue(parameters["value"], explicitly: true), nil)
+    if command == "returnValue" {
+      return await Renderer.shared.returnValue(parameters["value"], explicitly: true)
     }
 
-    if body["command"] as? String == "runService", let name = parameters["name"] as? String {
-      return (await NSPasteboard.general.runService(name, input: parameters["input"]), nil)
+    if command == "runService", let name = parameters["name"] as? String {
+      return await NSPasteboard.general.runService(name, input: parameters["input"])
     }
 
     return reportError("Invalid message: \(body)")
