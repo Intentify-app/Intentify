@@ -12,6 +12,7 @@ import IntentifyKit
 struct IntentifyApp: App {
   init () {
     Files.copyFiles()
+    Files.copyTypeDefinition()
 
     let checkUpdates: @Sendable () -> Void = {
       Task {

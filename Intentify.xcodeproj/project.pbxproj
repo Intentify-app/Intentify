@@ -18,9 +18,22 @@
 		87F16B7C2E99D98B00EFEDB8 /* IntentifyTools */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = IntentifyTools; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		876BCC862EA791EB004203FB /* Exceptions for "IntentifyMac" folder in "Copy Bundle Resources" phase from "IntentifyMac" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = 8735637A2E98EBF000DA60A8 /* Resources */;
+			membershipExceptions = (
+				Resources/Intentify.d.ts,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		874A1C312E9931B700FD2D8C /* IntentifyMac */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				876BCC862EA791EB004203FB /* Exceptions for "IntentifyMac" folder in "Copy Bundle Resources" phase from "IntentifyMac" target */,
+			);
 			explicitFolders = (
 				Resources/Extensions,
 			);
