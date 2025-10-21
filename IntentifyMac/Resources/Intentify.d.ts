@@ -11,7 +11,7 @@ export interface Intentify {
   /**
    * Used to communicate with [Foundation Models](https://developer.apple.com/documentation/FoundationModels).
    */
-  askAI(prompt: string): Promise<string>;
+  askAI(prompt: string): Promise<string | undefined>;
 
   /**
    * Used to present a polished interface or prompt the user for input.

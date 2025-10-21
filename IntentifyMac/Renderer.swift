@@ -27,7 +27,7 @@ final class Renderer: NSObject {
 
   private var resumeContinuation: ((Any?) -> Void)?
 
-  func renderUI(context: WKWebView, parameters: [String: Any]?) async -> Any? {
+  func renderUI(context: WKWebView, parameters: [String: Any]?) async -> (Any?, String?) {
     let html = parameters?["html"] as? String
     let options = parameters?["options"] as? [String: Any]
 
@@ -60,16 +60,17 @@ final class Renderer: NSObject {
       }
     } catch {
       Logger.log(.error, "\(error)")
+      return (nil, "\(error)")
     }
 
     return await withCheckedContinuation { [weak self] continuation in
       self?.resumeContinuation = {
-        continuation.resume(returning: $0)
+        continuation.resume(returning: ($0, nil))
       }
     }
   }
 
-  func returnValue(_ value: Any?, explicitly: Bool) -> Any? {
+  func returnValue(_ value: Any?, explicitly: Bool) async -> (Any?, String?) {
     resumeContinuation?(value)
     resumeContinuation = nil
 
@@ -81,7 +82,7 @@ final class Renderer: NSObject {
       NSApp.terminate(nil)
     }
 
-    return value
+    return (value, nil)
   }
 
   override private init() {
@@ -114,6 +115,8 @@ private extension Renderer {
       return
     }
 
-    _ = returnValue(nil, explicitly: false)
+    Task { @MainActor in
+      _ = await returnValue(nil, explicitly: false)
+    }
   }
 }

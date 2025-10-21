@@ -22,13 +22,14 @@ public extension NSPasteboard {
     }
   }
 
-  func runService(_ name: String, input: Any?) async -> Bool {
+  func runService(_ name: String, input: Any?) async -> (Bool, String?) {
     let content = input as? String
     string = content ?? ""
 
     // The pasteboard item is used as input, but it's not done synchronously
-    let result = NSPerformService(name, self)
+    let succeeded = NSPerformService(name, self)
     try? await Task.sleep(for: .seconds(0.5))
-    return result
+
+    return (succeeded, succeeded ? nil : "Failed to perform the service")
   }
 }
