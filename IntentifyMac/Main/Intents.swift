@@ -35,7 +35,7 @@ struct IntentifyIntent: AppIntent {
   @Parameter(title: "Extension", description: "The extension file to run.")
   var `extension`: ExtensionEntity
 
-  @Parameter(title: "Input", description: "The input value for running the extension. Uses an empty string if omitted.", default: "", inputOptions: String.IntentInputOptions(capitalizationType: .none, multiline: true, autocorrect: false, smartQuotes: false, smartDashes: false))
+  @Parameter(title: "Input", description: "The input value for running the extension. Uses an empty string if omitted.", default: "", inputOptions: String.IntentInputOptions(capitalizationType: .none, multiline: true, autocorrect: false, smartQuotes: false, smartDashes: false), inputConnectionBehavior: .connectToPreviousIntentResult)
   var input: String?
 
   func perform() async throws -> some ReturnsValue<[ResultEntity]> & ShowsSnippetView {
