@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8760CE642E99D3E1002A61EA /* Build.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 8760CE632E99D3E1002A61EA /* Build.xcconfig */; };
 		87F16B522E99D8F500EFEDB8 /* IntentifyKit in Frameworks */ = {isa = PBXBuildFile; productRef = 87F16B512E99D8F500EFEDB8 /* IntentifyKit */; };
 /* End PBXBuildFile section */
 
@@ -141,7 +140,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8760CE642E99D3E1002A61EA /* Build.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
