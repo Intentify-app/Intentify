@@ -101,6 +101,69 @@ extension Runner: WKUIDelegate {
 
     return nil
   }
+
+  // Handles window.alert()
+  func webView(
+    _ webView: WKWebView,
+    runJavaScriptAlertPanelWithMessage message: String,
+    initiatedByFrame frame: WKFrameInfo
+  ) async {
+    await showAlertPanel(message: message, cancellable: false)
+  }
+
+  // Handles window.confirm()
+  func webView(
+    _ webView: WKWebView,
+    runJavaScriptConfirmPanelWithMessage message: String,
+    initiatedByFrame frame: WKFrameInfo
+  ) async -> Bool {
+    await showAlertPanel(message: message)
+  }
+
+  // Handles window.prompt()
+  func webView(
+    _ webView: WKWebView,
+    runJavaScriptTextInputPanelWithPrompt prompt: String,
+    defaultText: String?,
+    initiatedByFrame frame: WKFrameInfo
+  ) async -> String? {
+    let inputField = NSTextField(frame: CGRect(x: 0, y: 0, width: 240, height: 24))
+    inputField.stringValue = defaultText ?? ""
+
+    let accepted = await showAlertPanel(
+      message: prompt,
+      accessoryView: inputField
+    )
+
+    return accepted ? inputField.stringValue : nil
+  }
+
+  @discardableResult
+  private func showAlertPanel(
+    message: String,
+    cancellable: Bool = true,
+    accessoryView: NSView? = nil
+  ) async -> Bool {
+    let alert = NSAlert()
+    alert.messageText = message
+    alert.accessoryView = accessoryView
+
+    if cancellable {
+      alert.addButton(withTitle: String(localized: "OK"))
+      alert.addButton(withTitle: String(localized: "Cancel"))
+    }
+
+    let presentSheetModal = {
+      guard let window = NSApp.keyWindow else {
+        return alert.runModal()
+      }
+
+      return await alert.beginSheetModal(for: window)
+    }
+
+    NSApp.bringToFront()
+    return await presentSheetModal() == .alertFirstButtonReturn
+  }
 }
 
 // MARK: - Private
