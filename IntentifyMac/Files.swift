@@ -71,6 +71,21 @@ enum Files {
     Indexer.startIndexing()
   }
 
+  static func copyTypeDefinition() {
+    guard let source = Bundle.main.url(forResource: "Intentify", withExtension: "d.ts") else {
+      return Logger.assertFail("Missing Intentify.d.ts in main bundle")
+    }
+
+    let target = URL.documentsDirectory.appending(path: "Intentify.d.ts")
+    try? FileManager.default.removeItem(at: target)
+
+    do {
+      try FileManager.default.copyItem(at: source, to: target)
+    } catch {
+      Logger.assertFail("Failed to copy type definition: \(error)")
+    }
+  }
+
   static func generateMetadata() {
     try? FileManager.default.removeItem(at: metadataFolder)
     FileManager.default.ensureFolder(url: metadataFolder)

@@ -1,7 +1,13 @@
+// @ts-check
+/// <reference path='../Intentify.d.ts' />
+
+/**
+ * @param {string} src
+ */
 async function load(src) {
   return new Promise(resolve => {
     if (document.querySelector(`script[src="${src}"]`)) {
-      return resolve();
+      return resolve(undefined);
     }
 
     const script = document.createElement('script');
@@ -16,11 +22,13 @@ async function load(src) {
  * Render Markdown content as HTML.
  *
  * @image eye
+ * @param {string} content
  */
 async function main(content) {
   await load('https://cdn.jsdelivr.net/npm/marked@16.4.1/lib/marked.umd.js');
-  const html = marked.parse(content);
 
+  // @ts-ignore
+  const html = marked.parse(content);
   return await Intentify.renderUI(
     `
     <style>body { padding: 10px }</style>
