@@ -170,16 +170,8 @@ extension Runner: WKUIDelegate {
       alert.addButton(withTitle: String(localized: "Cancel"))
     }
 
-    let presentSheetModal = {
-      guard let window = NSApp.keyWindow else {
-        return alert.runModal()
-      }
-
-      return await alert.beginSheetModal(for: window)
-    }
-
     NSApp.bringToFront()
-    return await presentSheetModal() == .alertFirstButtonReturn
+    return await alert.presentSheetModal() == .alertFirstButtonReturn
   }
 }
 

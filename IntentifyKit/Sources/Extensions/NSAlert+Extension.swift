@@ -27,13 +27,12 @@ public extension NSAlert {
     }
   }
 
-  static func runModal(message: String, style: Style = .critical) {
-    NSApp.activate()
+  func presentSheetModal(window: NSWindow? = NSApp.keyWindow) async -> NSApplication.ModalResponse {
+    guard let window else {
+      return runModal()
+    }
 
-    let alert = Self()
-    alert.alertStyle = style
-    alert.messageText = message
-    alert.runModal()
+    return await beginSheetModal(for: window)
   }
 }
 
