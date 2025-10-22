@@ -86,6 +86,18 @@ enum Files {
     }
   }
 
+  static func download(from url: URL, to folder: URL) async throws -> URL {
+    let (source, response) = try await URLSession.shared.download(from: url)
+    let target = folder.appending(path: response.suggestedFilename ?? url.lastPathComponent)
+
+    if FileManager.default.fileExists(atPath: target.path(percentEncoded: false)) {
+      try FileManager.default.removeItem(at: target)
+    }
+
+    try FileManager.default.moveItem(at: source, to: target)
+    return target
+  }
+
   static func generateMetadata() {
     try? FileManager.default.removeItem(at: metadataFolder)
     FileManager.default.ensureFolder(url: metadataFolder)

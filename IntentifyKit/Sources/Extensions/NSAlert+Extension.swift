@@ -27,6 +27,10 @@ public extension NSAlert {
     }
   }
 
+  func userAccepted(window: NSWindow? = NSApp.keyWindow) async -> Bool {
+    await presentSheetModal(window: window) == .alertFirstButtonReturn
+  }
+
   func presentSheetModal(window: NSWindow? = NSApp.keyWindow) async -> NSApplication.ModalResponse {
     guard let window else {
       return runModal()
