@@ -168,6 +168,18 @@ private struct IntentifyView: View {
               }
             }
           }
+
+          Divider()
+
+          Button {
+            NSPasteboard.general.string = Files.userFolder.path(percentEncoded: false)
+          } label: {
+            Label {
+              Text("Copy Folder Path")
+            } icon: {
+              Image(systemName: "document.on.document")
+            }
+          }
         }
 
         Text(" folder and ")
