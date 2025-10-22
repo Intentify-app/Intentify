@@ -39,10 +39,10 @@ struct IntentifyIntent: AppIntent {
   var input: String?
 
   func perform() async throws -> some ReturnsValue<[ResultEntity]> & ShowsSnippetView {
-    let result = try await Runner.shared.exec(
+    let result = ResultEntity.parse(try await Runner.shared.exec(
       entity: self.extension,
       input: input ?? ""
-    )
+    ))
 
     if let entity = result.first {
       if entity.shouldCopy {

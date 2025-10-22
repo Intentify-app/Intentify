@@ -59,7 +59,7 @@ final class Runner: NSObject {
     return webView
   }()
 
-  func exec(entity: ExtensionEntity, input: String) async throws -> [ResultEntity] {
+  func exec(entity: ExtensionEntity, input: String) async throws -> Any {
     let result = try await {
       do {
         return try await webView.callAsyncJavaScript(
@@ -79,7 +79,7 @@ final class Runner: NSObject {
     }()
 
     // If the extension returns no value, the input is passed to the next action
-    return ResultEntity.parse(result: result ?? input)
+    return result ?? input
   }
 
   override private init() {}
