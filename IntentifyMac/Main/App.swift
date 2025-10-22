@@ -7,6 +7,7 @@
 
 import SwiftUI
 import IntentifyKit
+import os.log
 
 @main
 struct IntentifyApp: App {
@@ -37,6 +38,34 @@ struct IntentifyApp: App {
     .windowResizability(.contentSize)
     .commands {
       CommandGroup(replacing: .help) {}
+      CommandGroup(after: .newItem) {
+        Button("Add Extension...") {
+          Task {
+            let inputField = NSTextField(frame: CGRect(x: 0, y: 0, width: 240, height: 24))
+            inputField.contentType = .URL
+
+            let alert = NSAlert()
+            alert.messageText = "Enter the URL"
+            alert.addButton(withTitle: String(localized: "Add to Intentify"))
+            alert.addButton(withTitle: String(localized: "Cancel"))
+            alert.accessoryView = inputField
+
+            guard await alert.userAccepted(), let url = URL(string: inputField.stringValue) else {
+              return
+            }
+
+            let target = try await Files.download(from: url, to: Files.userFolder)
+            Indexer.startIndexing()
+
+            if FileManager.default.fileExists(atPath: target.path(percentEncoded: false)) {
+              NSWorkspace.shared.activateFileViewerSelecting([target])
+            } else {
+              Logger.log(.error, "Failed to add the file: \(inputField.stringValue)")
+            }
+          }
+        }
+        .keyboardShortcut("+", modifiers: [.command])
+      }
     }
   }
 }

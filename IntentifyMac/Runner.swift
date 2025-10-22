@@ -171,7 +171,7 @@ extension Runner: WKUIDelegate {
     }
 
     NSApp.bringToFront()
-    return await alert.presentSheetModal() == .alertFirstButtonReturn
+    return await alert.userAccepted()
   }
 }
 
