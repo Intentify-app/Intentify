@@ -76,7 +76,7 @@ struct ResultEntity: AppEntity {
     !title.isEmpty
   }
 
-  static func parse(result: Any) -> [Self] {
+  static func parse(_ result: Any) -> [Self] {
     ((result as? [Any]) ?? [result]).map { item in
       if let json = item as? [String: String], let title = json["title"] {
         return Self(title: title, subtitle: json["subtitle"], image: json["image"])
