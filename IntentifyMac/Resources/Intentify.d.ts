@@ -24,6 +24,16 @@ export interface Intentify {
   returnValue(value?: ReturnValue): Promise<ReturnValue>;
 
   /**
+   * Used to list all available extensions.
+   */
+  listExtensions(): Promise<string[]>;
+
+  /**
+   * Used to run another extension with name and input.
+   */
+  runExtension(name: string, input?: string): Promise<ReturnValue>;
+
+  /**
    * Used to run a [system service](https://support.apple.com/guide/mac-help/mchlp1012/mac) with input.
    */
   runService(name: string, input?: string): Promise<boolean>;

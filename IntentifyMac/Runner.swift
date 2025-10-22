@@ -82,6 +82,23 @@ final class Runner: NSObject {
     return result ?? input
   }
 
+  func exec(name: String, input: Any?) async -> (Any?, String?) {
+    guard let entity = (ExtensionEntity.allEntities.first { $0.name == name }) else {
+      return (nil, "Extension ‘\(name)’ not found")
+    }
+
+    do {
+      let result = try await exec(
+        entity: entity,
+        input: (input as? String) ?? ""
+      )
+
+      return (result, nil)
+    } catch {
+      return (nil, "\(error)")
+    }
+  }
+
   override private init() {}
 }
 
@@ -200,6 +217,14 @@ private class MessageHandler: NSObject, Sendable, WKScriptMessageHandlerWithRepl
 
     if command == "returnValue" {
       return Renderer.shared.returnValue(parameters["value"], explicitly: true)
+    }
+
+    if command == "listExtensions" {
+      return (ExtensionEntity.allEntities.map(\.name), nil)
+    }
+
+    if command == "runExtension", let name = parameters["name"] as? String {
+      return await Runner.shared.exec(name: name, input: parameters["input"])
     }
 
     if command == "runService", let name = parameters["name"] as? String {
