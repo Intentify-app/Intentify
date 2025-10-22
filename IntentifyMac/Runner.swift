@@ -199,7 +199,7 @@ private class MessageHandler: NSObject, Sendable, WKScriptMessageHandlerWithRepl
     }
 
     if command == "returnValue" {
-      return await Renderer.shared.returnValue(parameters["value"], explicitly: true)
+      return Renderer.shared.returnValue(parameters["value"], explicitly: true)
     }
 
     if command == "runService", let name = parameters["name"] as? String {
