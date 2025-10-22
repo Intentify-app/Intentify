@@ -37,6 +37,20 @@ async function returnValue(value) {
   });
 }
 
+async function listExtensions() {
+  return await __invokeIntentify({
+    command: 'listExtensions',
+    parameters: {},
+  });
+}
+
+async function runExtension(name, input) {
+  return await __invokeIntentify({
+    command: 'runExtension',
+    parameters: { name, input },
+  });
+}
+
 async function runService(name, input) {
   return await __invokeIntentify({
     command: 'runService',
@@ -48,5 +62,7 @@ window.Intentify = {
   askAI,
   renderUI,
   returnValue,
+  listExtensions,
+  runExtension,
   runService,
 };
