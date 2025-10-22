@@ -44,4 +44,9 @@ async function runService(name, input) {
   });
 }
 
-window.Intentify = { askAI, renderUI, returnValue, runService };
+window.Intentify = {
+  askAI,
+  renderUI,
+  returnValue,
+  runService,
+};

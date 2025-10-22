@@ -70,7 +70,7 @@ final class Renderer: NSObject {
     }
   }
 
-  func returnValue(_ value: Any?, explicitly: Bool) async -> (Any?, String?) {
+  func returnValue(_ value: Any?, explicitly: Bool) -> (Any?, String?) {
     resumeContinuation?(value)
     resumeContinuation = nil
 
@@ -115,8 +115,6 @@ private extension Renderer {
       return
     }
 
-    Task { @MainActor in
-      _ = await returnValue(nil, explicitly: false)
-    }
+    _ = returnValue(nil, explicitly: false)
   }
 }
