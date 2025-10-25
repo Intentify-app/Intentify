@@ -45,7 +45,7 @@ struct IntentifyIntent: AppIntent {
     ))
 
     if let entity = result.first {
-      if entity.shouldCopy {
+      if self.extension.metadata?.avoidCopy != true {
         NSPasteboard.general.string = entity.title
       }
 

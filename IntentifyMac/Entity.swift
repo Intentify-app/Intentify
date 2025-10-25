@@ -14,7 +14,9 @@ struct ExtensionEntity: IndexedEntity {
   struct Metadata: Codable {
     let description: String?
     let image: String?
+    let displayName: String?
     let showsDialog: Bool
+    let avoidCopy: Bool
   }
 
   static let defaultQuery = ExtensionQuery()
@@ -28,10 +30,14 @@ struct ExtensionEntity: IndexedEntity {
   var metadata: Metadata?
 
   @ComputedProperty(indexingKey: \.displayName)
-  var name: String { id.lastPathComponent(deletePathExtension: true) }
+  var name: String {
+    metadata?.displayName ?? id.lastPathComponent(deletePathExtension: true)
+  }
 
   @ComputedProperty(indexingKey: \.contentDescription)
-  var description: String { metadata?.description ?? "Run “\(id)” in Intentify." }
+  var description: String {
+    metadata?.description ?? "Run “\(id)” in Intentify."
+  }
 
   var displayRepresentation: DisplayRepresentation {
     DisplayRepresentation(
@@ -70,10 +76,6 @@ struct ResultEntity: AppEntity {
       subtitle: subtitle.map { "\($0)" },
       image: DisplayRepresentation.Image(with: image)
     )
-  }
-
-  var shouldCopy: Bool {
-    !title.isEmpty
   }
 
   static func parse(_ result: Any) -> [Self] {
