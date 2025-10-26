@@ -2,13 +2,17 @@
  * Search Apple developer documentation.
  *
  * @image text.page
+ * @avoidCopy true
  */
 function main(keyword) {
-  if (keyword.length > 0) {
-    open(`https://developer.apple.com/search/?q=${encodeURIComponent(keyword)}&type=documentation`);
-  } else {
-    open('https://developer.apple.com/documentation/');
-  }
+  const url = (() => {
+    if (keyword.length > 0) {
+      return `https://developer.apple.com/search/?q=${encodeURIComponent(keyword)}&type=documentation`;
+    } else {
+      return 'https://developer.apple.com/documentation/';
+    }
+  })();
 
-  return '';
+  open(url);
+  return url;
 }

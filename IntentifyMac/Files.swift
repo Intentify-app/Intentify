@@ -109,10 +109,23 @@ enum Files {
       let content = (try? Data(contentsOf: url))?.toString() ?? ""
       let comment = (try? Parser.shared.parseComments(code: content))?.first
 
+      let tags: [String: String] = Dictionary(
+        uniqueKeysWithValues: comment?.tags?
+          .compactMap {
+            guard let name = $0.name, let value = $0.value else {
+              return nil
+            }
+
+            return (name, value)
+          } ?? []
+      )
+
       let metadata = ExtensionEntity.Metadata(
         description: comment?.description,
-        image: (comment?.tags?.first { $0.name == "image" })?.value,
-        showsDialog: (comment?.tags?.first { $0.name == "showsDialog" })?.value == "true"
+        image: tags["image"],
+        displayName: tags["displayName"],
+        showsDialog: tags["showsDialog"]?.lowercased() == "true",
+        avoidCopy: tags["avoidCopy"]?.lowercased() == "true"
       )
 
       let filename = url.deletingPathExtension().lastPathComponent
