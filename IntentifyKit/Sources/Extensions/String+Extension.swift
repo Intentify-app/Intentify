@@ -13,6 +13,10 @@ public extension String {
     self.init(data: data, encoding: String.Encoding(from: encoding))
   }
 
+  var boolValue: Bool {
+    (self as NSString).boolValue
+  }
+
   var quoteEscaped: Self {
     guard let data = try? JSONEncoder().encode(self), let json = data.toString() else {
       return "\"\""

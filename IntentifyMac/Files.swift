@@ -124,8 +124,8 @@ enum Files {
         description: comment?.description,
         image: tags["image"],
         displayName: tags["displayName"],
-        showsDialog: tags["showsDialog"]?.lowercased() == "true",
-        avoidCopy: tags["avoidCopy"]?.lowercased() == "true"
+        showsDialog: tags["showsDialog"]?.boolValue ?? false,
+        avoidCopy: tags["avoidCopy"]?.boolValue ?? false
       )
 
       let filename = url.deletingPathExtension().lastPathComponent
