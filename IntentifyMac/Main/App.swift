@@ -39,7 +39,7 @@ struct IntentifyApp: App {
     .commands {
       CommandGroup(replacing: .help) {}
       CommandGroup(after: .newItem) {
-        Button("Add Extension...") {
+        Button("Add Extension…") {
           Task {
             let inputField = NSTextField(frame: CGRect(x: 0, y: 0, width: 240, height: 24))
             inputField.contentType = .URL
